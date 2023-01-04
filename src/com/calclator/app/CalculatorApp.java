@@ -1,16 +1,15 @@
 package com.calclator.app;
-
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.ButtonGroup;
-
 //Main class
 public class CalculatorApp {
 	//Declaring the variables 
@@ -28,7 +27,6 @@ public class CalculatorApp {
 								buttonBackspace,buttonEquals,addition,subtraction,
 								multiplication,division,modulus;
 	private JRadioButton radioButtonOn,radioButtonOff;
-
 	/**
 	 * Launch the application.
 	 */
@@ -44,14 +42,13 @@ public class CalculatorApp {
 			}
 		});
 	}
-
 	/**
 	 * Create the application.
 	 */
 	public CalculatorApp() {
-		initialize();
+		initialize();	
 	}
-	public void enable() {   // Enable method which enables the buttons
+	public void enable() {                    
 		textField.setEnabled(true);
 		radioButtonOn.setEnabled(true);
 		button0.setEnabled(true);
@@ -74,9 +71,8 @@ public class CalculatorApp {
 		buttonDot.setEnabled(true);
 		buttonEquals.setEnabled(true);
 		modulus.setEnabled(true);
-		
-	}
-	public void disable() {    //Disable method which disables the buttons
+}
+	public void disable() {   //Disable method which disables the buttons
 		textField.setEnabled(false);
 		radioButtonOff.setEnabled(true);
 		button0.setEnabled(false);
@@ -110,6 +106,7 @@ public class CalculatorApp {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 		frmCalculator = new JFrame(); //Create instance of JFrame               
 		frmCalculator.setResizable(false);  // Prevent the user from resizing it      
 		frmCalculator.setTitle("Calculator"); //Set the title to the frame  
@@ -128,7 +125,6 @@ public class CalculatorApp {
 		radioButtonOn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				enable();
-				
 			}
 		});
 		buttonGroup.add(radioButtonOn);
@@ -347,40 +343,48 @@ public class CalculatorApp {
 		buttonEquals.setFont(new Font("Tahoma", Font.BOLD, 18));
 		buttonEquals.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String answer;
+				String answer = null;
+				DecimalFormat format = new DecimalFormat("0.########");// It formats the decimal number
+				
 				secondNumber=Double.parseDouble(textField.getText());
+				
 				//Addition
 				if(operation=="+") {
 					result=firstNumber+secondNumber;
-					answer=String.format("%.2f", result);
+					answer=String.format(format.format(result));
 					textField.setText(answer);	
 				}
 				//Subtraction
 				else if(operation=="-") {
 					result=firstNumber-secondNumber;
-					answer=String.format("%.2f", result);
+					answer=String.format(format.format(result));
 					textField.setText(answer);
 					
 				}
 				//Multiplication
 				else if(operation=="*") {
 					result=firstNumber*secondNumber;
-					answer=String.format("%.2f", result);
+					answer=String.format(format.format(result));
 					textField.setText(answer);	
 				}
 				//Division
 				else if(operation=="/") {
 					result=firstNumber/secondNumber;
-					answer=String.format("%.2f", result);
-					textField.setText(answer);	
+					if (Double.isInfinite(result)) {
+						JOptionPane.showMessageDialog(textField, "Not divisible by zero"+"," +"Please try entering the other number" );//Giving the pop up when divisible by zero
+						}
+					else {
+					answer=String.format(format.format(result));
+					textField.setText(answer);
 				}
+				}
+				
 				//Modulus
 				else if(operation=="%") {
 					result=firstNumber%secondNumber;
-					answer=String.format("%.2f", result);
+					answer=String.format(format.format(result));
 					textField.setText(answer);	
 				}
-				
 				showingAnswer = true;
 			}
 			
